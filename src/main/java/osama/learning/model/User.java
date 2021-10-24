@@ -1,5 +1,8 @@
 package osama.learning.model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class User {
     private final String name;
     private final char[] password;
@@ -15,23 +18,18 @@ public class User {
         return name;
     }
 
-    public boolean passwordEquals(char[] password) {
-        if (password == null || password.length != this.password.length)
-            return false;
-        for (int i = 0; i < password.length; i++)
-            if (password[i] != this.password[i])
-                return false;
-        return true;
-    }
-
-    public boolean passwordEquals(User other) {
-        return passwordEquals(other.password);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return name.equals(user.name) && Arrays.equals(password, user.password);
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                '}';
+    public int hashCode() {
+        int result = Objects.hash(name);
+        result = 31 * result + Arrays.hashCode(password);
+        return result;
     }
 }

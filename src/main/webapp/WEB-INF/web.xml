@@ -134,6 +134,10 @@
         <servlet-name>loginServlet</servlet-name>
         <servlet-class>osama.learning.servlets.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>errorsHandlerServlet</servlet-name>
+        <servlet-class>osama.learning.servlets.errorhandling.ErrorsHandlerServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>freemarker-servlet</servlet-name>
@@ -163,7 +167,47 @@
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>errorsHandlerServlet</servlet-name>
+        <url-pattern>/errorHandler</url-pattern>
+    </servlet-mapping>
 
+    <error-page>
+        <error-code>400</error-code>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>osama.learning.exceptions.EntryIsNotExistedException</exception-type>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>osama.learning.exceptions.EntryAlreadyExistedException</exception-type>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>osama.learning.exceptions.UserIsNotExistedException</exception-type>
+        <location>/errorHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>osama.learning.exceptions.NotEnoughParametersException</exception-type>
+        <location>/errorHandler</location>
+    </error-page>
     <!--
       Prevent the visiting of MVC Views from outside the servlet container.
       RequestDispatcher.forward/include should, and will still work.
@@ -175,6 +219,7 @@
             <url-pattern>*.ftl</url-pattern>
             <url-pattern>*.ftlh</url-pattern>
             <url-pattern>*.ftlx</url-pattern>
+            <url-pattern>/errorHandler</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <!-- Nobody is allowed to visit these directly. -->

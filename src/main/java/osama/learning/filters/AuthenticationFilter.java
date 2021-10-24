@@ -16,7 +16,7 @@ public class AuthenticationFilter extends HttpFilter {
         if (isLoggedIn(req))
             chain.doFilter(req, res);
         else {
-            req.getRequestDispatcher("/login").forward(req, res);
+            res.sendRedirect(req.getContextPath() + "/login");
         }
     }
 

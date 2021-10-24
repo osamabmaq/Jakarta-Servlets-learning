@@ -20,7 +20,7 @@ public class DeleteEntryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String key = req.getParameter("key");
         entryRepo.delete(key);
-        req.setAttribute("message", "Entry deletion");
+        req.setAttribute("event", "Entry deletion");
         req.getRequestDispatcher("/success-page.ftl").forward(req, resp);
     }
 }

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 public class LoginServlet extends HttpServlet {
     private final UserRepo userRepo = UserRepo.instance;
@@ -20,26 +19,19 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = getUser(req);
-
-        Optional<User> userInRepo = userRepo.get(user.getName());
-
-        userInRepo.stream()
-                .filter((u) -> userInRepo.isPresent() && userInRepo.get().passwordEquals(user))
-                .forEach((u) -> req.getSession().setAttribute("username", u.getName()));
-
-        userInRepo.stream()
-                .filter((u) -> userInRepo.isEmpty() || !userInRepo.get().passwordEquals(user))
-                .forEach((u) -> req.getSession().removeAttribute("username"));
-        //FIXME: this line permits every request to go to the read-all page even if the request is not logged in
-        req.getRequestDispatcher("/entry/readAll").forward(req, resp);
+        User incomingUser = extractUser(req);
+        if (userRepo.exists(incomingUser)) {
+            req.getSession().setAttribute("username", incomingUser.getName());
+            resp.sendRedirect(req.getContextPath() + "/entry/readAll");
+        } else {
+            req.getSession().removeAttribute("username");
+            resp.sendRedirect(req.getContextPath() + "/login");
+        }
     }
 
-
-    private User getUser(HttpServletRequest req) {
+    private User extractUser(HttpServletRequest req) {
         String username = req.getParameter("username");
-        String password = req.getParameter("password");
-
-        return new User(username, password.toCharArray());
+        char[] password = req.getParameter("password").toCharArray();
+        return new User(username, password);
     }
 }

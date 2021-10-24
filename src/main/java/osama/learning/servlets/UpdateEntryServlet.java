@@ -21,7 +21,7 @@ public class UpdateEntryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Entry entry = new Entry(req.getParameter("key"), req.getParameter("value"));
         entryRepo.update(entry);
-        req.setAttribute("message", "Entry update");
+        req.setAttribute("event", "Entry update");
         req.getRequestDispatcher("/success-page.ftl").forward(req, resp);
     }
 }

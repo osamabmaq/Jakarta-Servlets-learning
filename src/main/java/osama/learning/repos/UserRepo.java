@@ -3,7 +3,6 @@ package osama.learning.repos;
 import osama.learning.model.User;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Map.entry;
 
@@ -20,7 +19,11 @@ public enum UserRepo {
         return users.containsKey(username);
     }
 
-    public Optional<User> get(String username) {
-        return Optional.ofNullable(users.get(username));
+    public boolean exists(User user) {
+        return user.equals(get(user.getName()));
+    }
+
+    public User get(String username) {
+        return users.get(username);
     }
 }
