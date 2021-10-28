@@ -4,6 +4,9 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
+    <listener>
+        <listener-class>osama.learning.listeners.ApplicationDeploymentListener</listener-class>
+    </listener>
     <filter>
         <filter-name>loggingFilter</filter-name>
         <filter-class>osama.learning.filters.LoggingFilter</filter-class>
